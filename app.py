@@ -6,7 +6,7 @@ st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon
 
 # 2. 제미나이 API 설정 (본인의 API 키를 입력하거나 Streamlit Secrets 사용)
 # 과제 제출용이라면 시연 시에만 키를 넣고, 공유 시에는 삭제하는 것이 안전합니다.
-API_KEY = "YOUR_GEMINI_API_KEY" 
+API_KEY = "AIzaSyC8B3YzvRUGozgerKkdX1W1uPxn7O2-4qI"
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel('gemini-pro')
 
