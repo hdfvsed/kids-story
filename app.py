@@ -9,7 +9,7 @@ try:
     # Streamlit Secrets에서 키를 가져옵니다.
     API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('models/gemini-pro')
 except Exception as e:
     st.error(f"API 설정 오류가 발생했습니다. Secrets 설정을 확인해주세요: {e}")
 
