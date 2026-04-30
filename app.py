@@ -8,7 +8,7 @@ st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon
 # 과제 제출용이라면 시연 시에만 키를 넣고, 공유 시에는 삭제하는 것이 안전합니다.
 API_KEY = "AIzaSyC8B3YzvRUGozgerKkdX1W1uPxn7O2-4qI"
 genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 # 3. 기초 어휘 500개 중 주요 샘플 (실제로는 더 추가 가능)
 VOCAB_LIST = [
