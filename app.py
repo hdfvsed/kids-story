@@ -6,7 +6,7 @@ st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon
 
 # 2. 제미나이 API 설정
 # [중요] 아래 큰따옴표 안에 복사 버튼으로 가져온 전체 키를 붙여넣으세요!
-API_KEY = "여기에_복사한_키를_붙여넣으세요" 
+API_KEY = "AIzaSyDp1KqI7AQxlmh56Wq6dRbtoPB3blbkKeA" 
 
 try:
     genai.configure(api_key=API_KEY)
