@@ -10,9 +10,7 @@ API_KEY = "AIzaSyDp1KqI7AQxlmh56Wq6dRbtoPB3blbkKeA"
 
 try:
     genai.configure(api_key=API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
-except Exception as e:
-    st.error("API 설정 중 오류가 발생했습니다. 키를 다시 확인해주세요.")
+    model = genai.GenerativeModel('models/gemini-1.5-flash')
 
 # 3. 기초 어휘 리스트 (학령전기 500개 중 샘플)
 VOCAB_LIST = [
