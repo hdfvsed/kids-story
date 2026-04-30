@@ -62,7 +62,8 @@ if st.button("✨ 동화 만들기"):
             except Exception as e:
                 st.error(f"오류가 발생했습니다: {e}")
 
-st.caption("이 앱은 학령전기 기초 어휘를 바탕으로 AI가 이야기를 생성합니다.")        st.warning("단어를 최소 하나 이상 골라주세요!")
+st.caption("이 앱은 학령전기 기초 어휘를 바탕으로 AI가 이야기를 생성합니다.")        
+st.warning("단어를 최소 하나 이상 골라주세요!")
     else:
         with st.spinner("제미나이가 이야기를 짓고 있어요..."):
             try:
