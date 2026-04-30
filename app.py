@@ -10,8 +10,7 @@ API_KEY = "AIzaSyDp1KqI7AQxlmh56Wq6dRbtoPB3blbkKeA"
 
 try:
     genai.configure(api_key=API_KEY)
-    # 최신 모델인 gemini-1.5-flash를 사용하여 더 빠르게 생성합니다.
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-pro')
 except Exception as e:
     st.error("API 설정 중 오류가 발생했습니다. 키를 다시 확인해주세요.")
 
