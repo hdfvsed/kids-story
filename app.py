@@ -5,10 +5,17 @@ import google.generativeai as genai
 st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon="📖")
 
 # 2. 제미나이 API 설정
-    # 1. API 키 설정 (반드시 모델 생성보다 먼저 와야 합니다)
+try:
+    # 1. API 키 설정 (반드시 모델 생성보다 먼저 실행)
     API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=API_KEY)
+    
+    # 2. 모델 생성 (가장 안정적인 호출 방식)
     model = genai.GenerativeModel('gemini-pro')
+    
+except Exception as e:
+    # 에러가 발생했을 때 화면에 표시해주는 안전장치
+    st.error(f"API 설정 중 오류가 발생했습니다: {e}")
     
 # 3. 기초 어휘 리스트
 VOCAB_LIST = [
