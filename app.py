@@ -3,7 +3,6 @@ import google.generativeai as genai
 
 # 1. 앱 설정
 st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon="📖")
-
 # 2. 제미나이 API 설정
 try:
     # Streamlit Secrets에서 키를 가져옵니다.
