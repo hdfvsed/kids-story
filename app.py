@@ -8,8 +8,11 @@ st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon
 try:
     # Streamlit Secrets에서 키를 가져옵니다.
     API_KEY = st.secrets["GOOGLE_API_KEY"]
-    genai.configure(api_key=API_KEY)
+    model = genai.GenerativeModel('models/gemini-1.5-flash')
+except Exception as e:
+    # 혹시라도 실패할 경우를 대비해 gemini-pro를 예비로 시도합니다
     model = genai.GenerativeModel('models/gemini-pro')
+    genai.configure(api_key=API_KEY)
 except Exception as e:
     st.error(f"API 설정 오류가 발생했습니다. Secrets 설정을 확인해주세요: {e}")
 
