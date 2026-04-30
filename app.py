@@ -1,69 +1,62 @@
 import streamlit as st
-import google.generativeai as genai
+import random
 
 # 1. 앱 설정
 st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon="📖")
 
-# 2. 제미나이 API 설정
-try:
-    API_KEY = st.secrets["GOOGLE_API_KEY"]
-    genai.configure(api_key=API_KEY)
-    
-    # [수정] 404 에러 방지를 위해 가장 기본 경로인 'gemini-1.0-pro'를 사용합니다.
-    # 만약 이마저도 안될 경우를 대비해 2중 장치를 하였습니다.
-    try:
-        model = genai.GenerativeModel('gemini-1.0-pro')
-    except:
-        model = genai.GenerativeModel('models/gemini-1.0-pro')
-        
-except Exception as e:
-    st.error(f"API 설정 중 오류가 발생했습니다: {e}")
+# 2. 동화 문장 데이터베이스 (학령전기 기초 어휘 중심)
+# 언어 발달 수준에 맞춘 짧고 명확한 문장들입니다.
+STORY_DB = {
+    "강아지": ["귀여운 강아지가 꼬리를 살랑살랑 흔들어요.", "강아지가 바둑이 친구를 만나서 신나게 뛰어놀았어요."],
+    "나비": ["알록달록 나비가 예쁜 꽃 위에 살포시 앉았어요.", "나비가 날개를 파닥파닥 거리며 하늘 높이 날아갔답니다."],
+    "기차": ["은하수 기차가 칙칙폭폭 소리를 내며 달려가요.", "기차를 타고 맛있는 도시락을 먹으며 여행을 떠나요."],
+    "사과": ["빨갛게 익은 사과가 나무에서 툭! 떨어졌어요.", "새콤달콤한 사과를 아삭아삭 맛있게 나누어 먹었어요."],
+    "고양이": ["하얀 고양이가 햇볕 아래서 기지개를 쭈욱 켰어요.", "고양이가 살금살금 다가가 나비를 구경했답니다."],
+    "우유": ["고소한 우유를 마시니 키가 쑥쑥 자라는 것 같아요.", "컵에 담긴 하얀 우유가 찰랑찰랑 흔들려요."],
+    "자전거": ["따르릉따르릉! 자전거를 타고 공원을 한 바퀴 돌아요.", "바람을 가르며 자전거 페달을 힘차게 밟아보아요."],
+    "구름": ["뭉게뭉게 구름이 하늘 위에서 솜사탕처럼 떠다녀요.", "구름이 모여서 햇님과 숨바꼭질을 하고 있네요."],
+    "친구": ["다정한 친구와 손을 잡고 사이좋게 걸어갔어요.", "친구와 함께 재미있는 놀이를 하며 하하호호 웃었답니다."],
+    "로봇": ["튼튼한 로봇이 우리 집을 멋지게 지켜주고 있어요.", "로봇의 눈에서 반짝반짝 빛이 나며 인사를 해요."]
+}
 
-# 3. 기초 어휘 리스트
-VOCAB_LIST = [
-    "사과", "바나나", "강아지", "고양이", "기차", "우유", "포도", "딸기", "토끼", "사자",
-    "코끼리", "자동차", "비행기", "자전거", "학교", "선생님", "친구", "동생", "안경", "모자",
-    "해", "달", "별", "구름", "꽃", "나무", "나비", "공", "인형", "로봇"
-]
+# 3. UI 구성
+st.title("📖 우리 아이 마법 동화 만들기")
+st.write("아이와 함께 단어를 골라보세요. 마법처럼 이야기가 완성됩니다!")
 
-# 4. UI 구성
-st.title("📖 단어로 만드는 마법 동화")
-st.write("아이와 함께 단어를 골라보세요. 멋진 이야기가 만들어집니다!")
+# 분위기 선택 (이 방식에서는 문장의 느낌을 결정하는 용도로 사용)
+mood = st.radio("동화의 분위기를 골라주세요:", ["재미있는", "따뜻한", "신기한"], horizontal=True)
 
+# 단어 선택
 selected_words = st.multiselect(
-    "이야기에 넣고 싶은 단어를 골라주세요 (최대 3개):",
-    options=VOCAB_LIST,
-    max_selections=3
+    "이야기에 넣고 싶은 단어를 골라주세요 (여러 개 선택 가능):",
+    options=list(STORY_DB.keys())
 )
 
-mood = st.radio("동화의 분위기를 골라주세요:", ["재미있는", "감동적인", "모험이 가득한"], horizontal=True)
-
-# 5. 동화 생성
-if st.button("✨ 동화 만들기"):
+# 4. 동화 생성 로직
+if st.button("✨ 동화 완성하기"):
     if not selected_words:
-        st.warning("단어를 최소 하나 이상 골라주세요!")
+        st.warning("단어를 하나 이상 골라주세요!")
     else:
-        with st.spinner("AI 작가가 이야기를 짓고 있어요..."):
-            try:
-                prompt = f"""
-                너는 아동 문학 작가야. 학령전기 아동이 이해하기 쉬운 단어를 사용해줘.
-                조건:
-                1. 포함 단어: {', '.join(selected_words)}
-                2. 분위기: {mood}
-                3. 길이: 5문장 내외의 아주 짧은 동화
-                4. 마지막에는 아이에게 질문을 하나 던져줘.
-                """
-                response = model.generate_content(prompt)
-                
-                st.success("동화 완성!")
-                st.markdown("---")
-                st.subheader("우리 아이를 위한 마법 이야기")
-                st.write(response.text)
-                st.markdown("---")
-                st.balloons()
-            except Exception as e:
-                # 에러 메시지를 더 구체적으로 표시하여 원인을 파악합니다.
-                st.error(f"죄송합니다. 동화 생성 중 오류가 발생했습니다. (오류 내용: {e})")
+        with st.spinner("마법의 문장을 연결하고 있어요..."):
+            # 선택된 단어들에 해당하는 문장들을 무작위로 하나씩 뽑아서 합칩니다.
+            final_story = []
+            for word in selected_words:
+                sentence = random.choice(STORY_DB[word])
+                final_story.append(sentence)
+            
+            # 결과 출력
+            st.success("오늘의 동화가 완성되었습니다!")
+            st.markdown("---")
+            st.subheader(f"🌟 {mood} 우리 아이 이야기")
+            
+            # 문장들을 자연스럽게 이어 붙여서 출력
+            st.info(" ".join(final_story))
+            
+            # 마지막 질문 추가 (언어 발달 자극용)
+            st.write(f"👉 **아이에게 물어봐 주세요:** \"우리 {selected_words[0]}와 함께 또 어떤 모험을 하면 좋을까?\"")
+            
+            st.markdown("---")
+            st.balloons()
 
-# 6. 앱 하단 캡션
-st.caption("이 앱은 학령전기 기초 어휘를 바탕으로 AI가 이야기를 생성합니다.")
+# 5. 앱 하단 캡션
+st.caption("이 앱은 API 없이 작동하는 안전한 언어 교육용 프로그램입니다.")
