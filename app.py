@@ -10,10 +10,6 @@ try:
     API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=API_KEY)
     
-    # 2. 모델 생성 (가장 호환성이 좋은 이름 형식 사용)
-    # 404 에러를 방지하기 위해 'models/'를 제거한 이름으로 시도합니다.
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    
 except Exception as e:
     # 위 모델이 실패할 경우를 대비한 예비 모델 설정
     model = genai.GenerativeModel('gemini-pro')
