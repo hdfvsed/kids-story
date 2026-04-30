@@ -1,6 +1,7 @@
-import streamlit as st
-import google.generativeai as genai
-
+File "/mount/src/kids-story/app.py", line 9
+  File "/mount/src/kids-story/app.py", line 16
+       ^
+SyntaxError: invalid syntax
 # 1. 앱 설정
 st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon="📖")
 
