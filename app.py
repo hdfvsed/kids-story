@@ -37,9 +37,7 @@ mood = st.radio("동화의 분위기를 골라주세요:", ["재미있는", "감
 # 5. 동화 생성
 if st.button("✨ 동화 만들기"):
     if not selected_words:
-        st.warning("단어를 선택해주세요!")
-    elif API_KEY == "여기에_복사한_키를_붙여넣으세요":
-        st.error("코드를 수정하여 실제 API 키를 입력해주셔야 합니다.")
+        st.warning("단어를 최소 하나 이상 골라주세요!")
     else:
         with st.spinner("AI 작가가 이야기를 짓고 있어요..."):
             try:
@@ -62,33 +60,5 @@ if st.button("✨ 동화 만들기"):
             except Exception as e:
                 st.error(f"오류가 발생했습니다: {e}")
 
-st.caption("이 앱은 학령전기 기초 어휘를 바탕으로 AI가 이야기를 생성합니다.")        
-st.warning("단어를 최소 하나 이상 골라주세요!")
-    else:
-        with st.spinner("제미나이가 이야기를 짓고 있어요..."):
-            try:
-                # 프롬프트 구성 (바이브 코딩의 핵심: LLM에게 명확한 역할 부여)
-                prompt = f"""
-                너는 아동 문학 작가야. 학령전기 아동이 이해하기 쉬운 단어와 문장을 사용해줘.
-                다음 조건을 지켜서 짧은 동화를 지어줘:
-                1. 포함될 단어: {', '.join(selected_words)}
-                2. 분위기: {mood}
-                3. 길이: 5문장 내외
-                4. 마지막에는 아이에게 질문을 하나 던져줘.
-                """
-                
-                response = model.generate_content(prompt)
-                
-                # 결과 출력
-                st.success("동화가 완성되었습니다!")
-                st.markdown("---")
-                st.subheader(f"제목: {selected_words[0]}와(과) 친구들의 이야기")
-                st.write(response.text)
-                st.markdown("---")
-                
-            except Exception as e:
-                st.error(f"오류가 발생했습니다: {e}")
-                st.info("API 키가 정확한지, 혹은 사용량이 초과되지 않았는지 확인해주세요.")
-
-# 하단 정보
+# 앱의 맨 하단 설명 (가장 왼쪽에 붙여서 작성)
 st.caption("이 앱은 학령전기 기초 어휘를 바탕으로 AI가 이야기를 생성합니다.")
