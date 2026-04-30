@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 # 1. 앱 설정
-st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon="📖")
+st.set_page_config(page_title="아이가 선택한 단어로 동화 만들기", page_icon="📖")
 
 # 2. 동화 문장 데이터베이스 (학령전기 기초 어휘 중심)
 # 언어 발달 수준에 맞춘 짧고 명확한 문장들입니다.
