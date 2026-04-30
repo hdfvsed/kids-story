@@ -6,17 +6,15 @@ st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon
 
 # 2. 제미나이 API 설정
 try:
-    # Secrets에서 키 가져오기
     API_KEY = st.secrets["GOOGLE_API_KEY"]
     genai.configure(api_key=API_KEY)
     
-    # [핵심] 404 오류 해결을 위한 모델 설정
-    # 가장 표준적인 경로인 'models/gemini-1.5-flash'를 먼저 시도합니다.
+    # [수정] 404 에러 방지를 위해 가장 기본 경로인 'gemini-1.0-pro'를 사용합니다.
+    # 만약 이마저도 안될 경우를 대비해 2중 장치를 하였습니다.
     try:
-        model = genai.GenerativeModel('models/gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-1.0-pro')
     except:
-        # 실패할 경우 예비 모델인 gemini-pro를 시도합니다.
-        model = genai.GenerativeModel('models/gemini-pro')
+        model = genai.GenerativeModel('models/gemini-1.0-pro')
         
 except Exception as e:
     st.error(f"API 설정 중 오류가 발생했습니다: {e}")
@@ -47,7 +45,6 @@ if st.button("✨ 동화 만들기"):
     else:
         with st.spinner("AI 작가가 이야기를 짓고 있어요..."):
             try:
-                # 학령전기 아동 수준에 맞춘 프롬프트
                 prompt = f"""
                 너는 아동 문학 작가야. 학령전기 아동이 이해하기 쉬운 단어를 사용해줘.
                 조건:
@@ -65,7 +62,8 @@ if st.button("✨ 동화 만들기"):
                 st.markdown("---")
                 st.balloons()
             except Exception as e:
-                st.error(f"동화 생성 중 오류가 발생했습니다: {e}")
+                # 에러 메시지를 더 구체적으로 표시하여 원인을 파악합니다.
+                st.error(f"죄송합니다. 동화 생성 중 오류가 발생했습니다. (오류 내용: {e})")
 
 # 6. 앱 하단 캡션
 st.caption("이 앱은 학령전기 기초 어휘를 바탕으로 AI가 이야기를 생성합니다.")
