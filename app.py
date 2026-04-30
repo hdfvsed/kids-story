@@ -13,8 +13,6 @@ except Exception as e:
     # 혹시라도 실패할 경우를 대비해 gemini-pro를 예비로 시도합니다
     model = genai.GenerativeModel('models/gemini-pro')
     genai.configure(api_key=API_KEY)
-except Exception as e:
-    st.error(f"API 설정 오류가 발생했습니다. Secrets 설정을 확인해주세요: {e}")
 
 # 3. 기초 어휘 리스트
 VOCAB_LIST = [
