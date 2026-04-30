@@ -3,16 +3,21 @@ import google.generativeai as genai
 
 # 1. 앱 설정
 st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon="📖")
+
 # 2. 제미나이 API 설정
 try:
-    # Streamlit Secrets에서 키를 가져옵니다.
+    # 1. API 키 설정 (반드시 모델 생성보다 먼저 와야 합니다)
     API_KEY = st.secrets["GOOGLE_API_KEY"]
-    model = genai.GenerativeModel('models/gemini-1.5-flash')
-except Exception as e:
-    # 혹시라도 실패할 경우를 대비해 gemini-pro를 예비로 시도합니다
-    model = genai.GenerativeModel('models/gemini-pro')
     genai.configure(api_key=API_KEY)
-
+    
+    # 2. 모델 생성 (가장 호환성이 좋은 이름 형식 사용)
+    # 404 에러를 방지하기 위해 'models/'를 제거한 이름으로 시도합니다.
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    
+except Exception as e:
+    # 위 모델이 실패할 경우를 대비한 예비 모델 설정
+    model = genai.GenerativeModel('gemini-pro')
+    
 # 3. 기초 어휘 리스트
 VOCAB_LIST = [
     "사과", "바나나", "강아지", "고양이", "기차", "우유", "포도", "딸기", "토끼", "사자",
