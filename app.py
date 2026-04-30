@@ -4,20 +4,8 @@ import google.generativeai as genai
 # 1. 앱 설정
 st.set_page_config(page_title="우리 아이 단어 동화 만들기", page_icon="📖")
 
-# 2. 제미나이 API 설정
-try:
-    API_KEY = st.secrets["GOOGLE_API_KEY"]
-    genai.configure(api_key=API_KEY)
+오류가 발생했습니다: 404 models/gemini-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
     
-    # 첫 번째 시도: 가장 기본인 gemini-pro (경로 없이)
-    try:
-        model = genai.GenerativeModel('gemini-pro')
-    except:
-        # 두 번째 시도: 혹시 몰라 경로를 포함한 명칭
-        model = genai.GenerativeModel('models/gemini-pro')
-        
-except Exception as e:
-    st.error(f"API 설정 중 오류가 발생했습니다: {e}")
     
 # 3. 기초 어휘 리스트
 VOCAB_LIST = [
